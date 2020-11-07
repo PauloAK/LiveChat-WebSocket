@@ -1,5 +1,7 @@
 'use strict'
 
+const { get } = require('@adonisjs/framework/src/Route/Manager');
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -21,6 +23,9 @@ Route.post('/auth/login', 'AuthController.login').validator('Auth/Login');
 Route.post('/auth/register', 'AuthController.register').validator('Auth/Register');
 
 Route.group(() => {
+  // Users
+  Route.get('/users', 'UserController.index');
+
   // Chats
   Route.get('/chats', 'ChatController.index');
   Route.get('/chats/:id', 'ChatController.show');
