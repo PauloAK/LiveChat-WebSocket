@@ -1,7 +1,5 @@
 'use strict'
 
-const { get } = require('@adonisjs/framework/src/Route/Manager');
-
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -38,5 +36,4 @@ Route.group(() => {
   Route.post('/chats/:chat_id/messages', 'MessageController.store').validator('Message/Store');
   Route.put('/chats/:chat_id/messages/:id', 'MessageController.update').validator('Message/Update');
   Route.delete('/chats/:chat_id/messages/:id', 'MessageController.destroy');
-
 }).middleware('auth');
