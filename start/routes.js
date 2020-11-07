@@ -25,6 +25,8 @@ Route.group(() => {
   Route.get('/chats', 'ChatController.index');
   Route.get('/chats/:id', 'ChatController.show');
   Route.post('/chats', 'ChatController.store').validator('Chat/Store');
+  Route.get('/chats/:id/participants', 'ChatController.participants');
+  Route.post('/chats/:id/participants', 'ChatController.participant').validator('Chat/Participant');
   Route.delete('/chats/:id', 'ChatController.destroy');
 
   // Messages
