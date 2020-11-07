@@ -35,7 +35,12 @@ class User extends Model {
     return this.hasMany('App/Models/Token')
   }
 
+  // Chats i've created
   chats () {
+    return this.belongsToMany('App/Models/Chat', 'user_id')
+  }
+
+  joinedChats () {
     return this.manyThrough('App/Models/ChatUser', 'chat')
   }
 }

@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class ChatUser extends Model {
+    static get table () {
+        return 'chat_user';
+    }
 
     user () {
         return this.hasOne('App/Models/User')

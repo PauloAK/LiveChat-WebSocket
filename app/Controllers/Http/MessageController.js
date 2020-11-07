@@ -1,32 +1,36 @@
 'use strict'
 
-const Chat = use ('App/Models/Chat');
-const Message = use ('App/Models/Message');
 
 class MessageController {
 
-    async store ({ request, auth, chat_id, response }) {
-        let params = request.only(['content']);
+    async store ({ request, auth, params, response }) {
+        const { content } = request.all();
 
-        let chat = await auth.user.chats().where((chat_id) => { this.where('id', chat_id) }).first();
+        let chat = await auth.user.joinedChats().where('chats.id', params.chat_id).firstOrFail();
         
-        let message = chat.messages().create({
-            content: params.content
+        let message = await chat.messages().create({
+            content: content,
+            user_id: auth.user.id
         });
 
         return response.json({ data: message });
     }
 
-    async update ({ auth, chat_id, id, response }) {
-        let message = auth.user.chats().find(chat_id).messages().find(id).update({
-            content: request.content
+    async update ({ request, auth, params, response }) {
+        const { content } = request.all();
+
+        let chat = await auth.user.chats().where('chats.id', params.chat_id).firstOrFail();
+
+        let message = await chat.messages().where('chat_messages.id', params.id).update({
+            content: content
         });
 
         return response.json({ data: message })
     }
 
-    async destroy ({ auth, chat_id, id, response }) {
-        auth.user.chats().find(chat_id).messages().find(id).destroy();
+    async destroy ({ auth, params, response }) {
+        let chat = await auth.user.chats().where('chats.id', params.chat_id).firstOrFail();
+        await chat.messages().where('chat_messages.id', params.id).delete();
         return response.json({ message: "Message deleted" })
     }
 }

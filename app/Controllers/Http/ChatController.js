@@ -1,32 +1,31 @@
 'use strict'
 
-const Chat = use('App/Models/Chat')
-
 class ChatController {
 
     async index ({ auth, response }) {
-        return response.json({ data:  await auth.user.chats().fetch() });
+        return response.json({ data:  await auth.user.joinedChats().fetch() });
     }
 
     async store ({ request, auth, response }) {
-        let params = request.only(['name']);
-        let chat = await Chat.create({ name: params.name });
-        chat.chatUser().create({ user_id: auth.user.id });
+        const { name } = request.all();
+
+        let chat = await auth.user.chats().create({ name: name, user_id: auth.user.id });
+        await chat.participants().create({ user_id: auth.user.id });
 
         return response.json({ message: 'Chat created!', id: chat.id })
     }
 
-    async show ({ auth, response, id }) {
-        let chat = await auth.user.chats().find(id).with('messages');
+    async show ({ auth, response, params }) {
+        let chat = await auth.user.joinedChats().where('chats.id', params.id).with('messages').firstOrFail();
 
         return response.json({ data: chat });
     }
 
-    async destroy ({ auth, response, id}) {
-        let chat = await auth.user.chats().find(id);
+    async destroy ({ auth, response, params}) {
+        let chat = await auth.user.chats().where('chats.id', params.id).firstOrFail()
 
-        chat.messages().destroy();
-        chat.destroy();
+        chat.messages().delete();
+        chat.delete();
 
         return response.json({ message: "Chat deleted!"});
     }

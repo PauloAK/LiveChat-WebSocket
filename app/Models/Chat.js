@@ -5,12 +5,12 @@ const Model = use('Model')
 
 class Chat extends Model {
 
-    static scopeHasProfile (query) {
-        return query.has('profile')
+    participants () {
+        return this.hasMany('App/Models/ChatUser');
     }
 
-    chatUser () {
-        return this.hasMany('App/Models/ChatUser');
+    owner () {
+        return this.belongsTo('App/Models/User')
     }
 
     users () {
