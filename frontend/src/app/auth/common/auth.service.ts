@@ -4,13 +4,17 @@ import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http : HttpClient) { }
+  constructor(
+    private http : HttpClient,
+    private router : Router
+  ) { }
 
   login(user: User) : Observable<Auth> {
     return this.http.post<Auth>(`${environment.apiURL}/auth/login`, user, {

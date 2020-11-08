@@ -8,7 +8,7 @@ class AuthController {
         let params = request.only(['username', 'password']);
         let token = await auth.withRefreshToken().attempt(params.username, params.password);
 
-        return response.json({ message: "Logged in!", token: token.token});
+        return response.json({ message: "Logged in!", token: token.token, user: await auth.user});
     }
 
     async register ({ request, auth, response }) {
@@ -17,6 +17,10 @@ class AuthController {
         let token = await auth.withRefreshToken().generate(user);
 
         return response.status(201).json({ message: "Created successfully!", token: token.token});
+    }
+
+    async me ({ auth, response }){
+        return response.json( await auth.user );
     }
 
 }

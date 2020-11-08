@@ -22,6 +22,7 @@ Route.post('/auth/register', 'AuthController.register').validator('Auth/Register
 
 Route.group(() => {
   // Users
+  Route.get('/me', 'AuthController.me');
   Route.get('/users', 'UserController.index');
 
   // Chats

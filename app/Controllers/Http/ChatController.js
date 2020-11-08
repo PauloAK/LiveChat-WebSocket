@@ -3,7 +3,7 @@
 class ChatController {
 
     async index ({ auth, response }) {
-        return response.json({ data:  await auth.user.joinedChats().fetch() });
+        return response.json(await auth.user.joinedChats().fetch());
     }
 
     async store ({ request, auth, response }) {
@@ -18,7 +18,7 @@ class ChatController {
     async show ({ auth, response, params }) {
         let chat = await auth.user.joinedChats().where('chats.id', params.id).with('messages').firstOrFail();
 
-        return response.json({ data: chat });
+        return response.json(chat);
     }
 
     async destroy ({ auth, response, params}) {
@@ -42,7 +42,7 @@ class ChatController {
     async participants({ auth, response, params }){
         let chat = await auth.user.chats().where('chats.id', params.id).firstOrFail();
 
-        return response.json({ data: chat.participants() })
+        return response.json( chat.participants() )
     }
 
 }

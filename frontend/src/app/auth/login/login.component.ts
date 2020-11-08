@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
         this.toastr.success(success.message);
         // Save the bearer token
         window.localStorage.setItem('token', success.token);
+        window.localStorage.setItem('user', JSON.stringify(success.user));
         // Redirect to homepage
         this.router.navigate(['']);
       },

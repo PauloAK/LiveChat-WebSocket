@@ -18,4 +18,15 @@ export class UtilsService {
 
     return messages.join("\n");
   }
+
+  token () : string {
+    return `Bearer ${window.localStorage.getItem('token')}`;
+  }
+
+  headers () : any {
+    return {
+      'Accept': 'application/json',
+      'Authorization': this.token()
+    }
+  }
 }
