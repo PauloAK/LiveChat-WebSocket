@@ -2,24 +2,37 @@
     <h3>Login</h3>
 </div>
 
-<form name="login" (ngSubmit)="onSubmit()" class="d-flex px-3">
+<form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="d-flex px-3">
     <div class="col-12">
         <div class="form-group">
             <label>Username:</label>
-            <input type="text" class="form-control" required name="username" id="username" [(ngModel)]="login.username" placeholder="john.doe">
+            <input type="text" class="form-control" required name="username" formControlName="username" placeholder="john.doe"[ngClass]="{ 'is-invalid': loginForm.controls.username.touched && loginForm.controls.username.errors }">
+            <div class="text-danger small" *ngIf="loginForm.controls.username.touched && loginForm.controls.username.errors?.required">
+                Username is required
+            </div>
         </div>
     </div>
 
     <div class="col-12">
         <div class="form-group">
             <label>Password:</label>
-            <input type="password" class="form-control" required name="password" id="password" [(ngModel)]="login.password">
+            <input type="password" class="form-control" required name="password" formControlName="password" [ngClass]="{ 'is-invalid': loginForm.controls.password.touched && loginForm.controls.password.errors }">
+            <div class="text-danger small" *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required">
+                Password is required
+            </div>
+            <div class="text-danger small" *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.minlength">
+                Password must have 6 caracters at least
+            </div>
         </div>
     </div>
 
     <div class="col-12 text-center">
         <div class="form-group">
-            <button class="btn btn-primary">Login</button>
+            <button class="btn btn-primary btn-sm" [disabled]="loginForm.invalid || loading">Login</button>
         </div>
+    </div>
+
+    <div class="col-12 text-center small text-muted">
+        Don't have an account? <a routerLink="/register">Create one</a>
     </div>
 </form>

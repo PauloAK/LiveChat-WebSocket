@@ -21,6 +21,10 @@ export class AuthService {
   }
 
   register(user: User) {
-    
+    return this.http.post<Auth>(`${environment.apiURL}/auth/register`, user, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
   }
 }

@@ -1,1 +1,48 @@
-<p>register works!</p>
+<div class="col-12 text-center">
+    <h3>Register</h3>
+</div>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="d-flex px-3">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" class="form-control" required name="username" formControlName="username" placeholder="john.doe" [ngClass]="{ 'is-invalid': registerForm.controls.username.touched && registerForm.controls.username.errors }">
+            <div class="text-danger small" *ngIf="registerForm.controls.username.touched && registerForm.controls.username.errors?.required">
+                Username is required
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-group">
+            <label>Full Name:</label>
+            <input type="text" class="form-control" required name="name" formControlName="name" placeholder="John Doe" [ngClass]="{ 'is-invalid': registerForm.controls.name.touched && registerForm.controls.name.errors }">
+            <div class="text-danger small" *ngIf="registerForm.controls.name.touched && registerForm.controls.name.errors?.required">
+                Name is required
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" class="form-control" required name="password" formControlName="password" [ngClass]="{ 'is-invalid': registerForm.controls.password.touched && registerForm.controls.password.errors }">
+            <div class="text-danger small" *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required">
+                Password is required
+            </div>
+            <div class="text-danger small" *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.minlength">
+                Password must have 6 caracters at least
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 text-center">
+        <div class="form-group">
+            <button class="btn btn-primary btn-sm" [disabled]="registerForm.invalid || loading">Register</button>
+        </div>
+    </div>
+
+    <div class="col-12 text-center small text-muted">
+        Already have an account? <a routerLink="/login">Login</a>
+    </div>
+</form>
