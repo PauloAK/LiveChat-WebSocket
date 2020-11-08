@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="col-12 text-center">
+    <h3>Login</h3>
+</div>
+
+<form name="login" (ngSubmit)="onSubmit()" class="d-flex px-3">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" class="form-control" required name="username" id="username" [(ngModel)]="login.username" placeholder="john.doe">
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" class="form-control" required name="password" id="password" [(ngModel)]="login.password">
+        </div>
+    </div>
+
+    <div class="col-12 text-center">
+        <div class="form-group">
+            <button class="btn btn-primary">Login</button>
+        </div>
+    </div>
+</form>
