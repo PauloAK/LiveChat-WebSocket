@@ -1,3 +1,4 @@
+import { WebsocketService } from './../../common/websocket.service';
 import { UtilsService } from './../../helpers/utils.service';
 import { MessageService } from './../../common/message.service';
 import { ChatService } from './../../common/chat.service';
@@ -19,7 +20,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private chatService : ChatService,
     private messageService : MessageService,
-    public utils : UtilsService
+    public utils : UtilsService,
+    private wsService : WebsocketService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +31,11 @@ export class HomeComponent implements OnInit {
   openChat(chat : Chat){
     this.currentMessage = null;
     this.currentChat = null;
+    this.wsService.connect(`chat:${chat.id}`);
+    this.wsService.onMessage( (message) => {
+      this.currentChat.messages.push(message);
+    });
+
     this.chatService.show(chat.id).subscribe(
       chat => {
         this.currentChat = chat;
@@ -57,7 +64,6 @@ export class HomeComponent implements OnInit {
 
     this.messageService.create(this.currentChat.id, message).subscribe(
       success => {
-        this.currentChat.messages.push(message);
       }
     );
   }

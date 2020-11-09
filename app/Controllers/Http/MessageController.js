@@ -1,5 +1,6 @@
 'use strict'
 
+const Ws = use("Ws");
 
 class MessageController {
 
@@ -13,6 +14,7 @@ class MessageController {
             user_id: auth.user.id
         });
 
+        this.sendWSData(chat.id, message);
         return response.json({ data: message });
     }
 
@@ -25,6 +27,7 @@ class MessageController {
             content: content
         });
 
+        this.sendWSData(chat.id, message);
         return response.json({ data: message })
     }
 
@@ -32,6 +35,15 @@ class MessageController {
         let chat = await auth.user.chats().where('chats.id', params.chat_id).firstOrFail();
         await chat.messages().where('chat_messages.id', params.id).delete();
         return response.json({ message: "Message deleted" })
+    }
+
+    sendWSData(chat_id, message) {
+        let channel = Ws.getChannel('chat:*');
+        const topic = channel.topic(`chat:${chat_id}`);
+
+        if(topic){
+            topic.broadcast('message', message);
+        }
     }
 }
 
