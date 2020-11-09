@@ -22,8 +22,8 @@
                 </div>
                 <div id="messages" class="col-12">
 
-                    <ul>
-                        <li *ngFor="let message of currentChat.messages" [ngClass]="{ 'my-message' : message.user_id == 1 }">
+                    <ul class="chat">
+                        <li class="message" *ngFor="let message of currentChat.messages" [ngClass]="{ 'me' : message.user_id == utils.userId(), 'other' : message.user_id != utils.userId() }">
                             {{ message.content }}
                         </li>
                     </ul>

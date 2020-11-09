@@ -1,3 +1,4 @@
+import { UtilsService } from './../../helpers/utils.service';
 import { MessageService } from './../../common/message.service';
 import { ChatService } from './../../common/chat.service';
 import { Component, OnInit } from '@angular/core';
@@ -17,7 +18,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private chatService : ChatService,
-    private messageService : MessageService
+    private messageService : MessageService,
+    public utils : UtilsService
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +49,8 @@ export class HomeComponent implements OnInit {
       return;
 
     let message : Message = {
-      content: this.currentMessage
+      content: this.currentMessage,
+      user_id: this.utils.userId()
     }
 
     this.currentMessage = null;

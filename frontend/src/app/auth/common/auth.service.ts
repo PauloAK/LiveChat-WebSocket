@@ -1,10 +1,10 @@
+import { UtilsService } from './../../helpers/utils.service';
 import { User } from './../../interfaces/user';
 import { Auth } from './../../interfaces/auth';
 import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   constructor(
-    private http : HttpClient,
-    private router : Router
+    private http : HttpClient
   ) { }
 
   login(user: User) : Observable<Auth> {
@@ -28,6 +27,15 @@ export class AuthService {
     return this.http.post<Auth>(`${environment.apiURL}/auth/register`, user, {
       headers: {
         'Accept': 'application/json'
+      }
+    });
+  }
+
+  me() : Observable<User> {
+    return this.http.get<User>(`${environment.apiURL}/me`, {
+      headers : {
+        'Accept': 'application/json',
+        'Autorization': `Bearer ${window.localStorage.getItem('token')}`
       }
     });
   }

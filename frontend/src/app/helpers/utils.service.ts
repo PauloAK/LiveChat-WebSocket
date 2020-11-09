@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { AuthService } from './../auth/common/auth.service';
+import { Injectable, Injector } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilsService {
 
-  constructor() { }
+  auth = this.injector.get<AuthService>(AuthService);
+
+  constructor( private injector: Injector) { }
 
   buildErrorMessage(response : any) : string {
     let messages = [];
@@ -28,5 +31,10 @@ export class UtilsService {
       'Accept': 'application/json',
       'Authorization': this.token()
     }
+  }
+
+  userId () : number {
+    let user = JSON.parse(window.localStorage.getItem('user'));
+    return user.id;
   }
 }
